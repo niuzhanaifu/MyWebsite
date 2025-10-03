@@ -53,12 +53,20 @@
           <li><span class="check">✔</span> 24/7 live customer support</li>
         </ul>
           <div>
-            <button class="start-btn" @click="fetchMessage">Start now</button>
+            <button class="start-btn" @click="fetchMessage">现在开始</button>
             <p v-if="backendMsg">{{ backendMsg }}</p>
           </div>
       </div>
       <div class="right">
-        <img src="../files/demo-picture.png" alt="demo" />
+        <video
+          ref="demoVideo"
+          src="../files/output.mp4"
+          class="demo-video"
+          @click="toggleVideo"
+          controls
+          preload="auto"
+          poster="../files/demo-picture.png"
+        ></video>
       </div>
     </main>
   </div>
@@ -82,6 +90,16 @@ function closeDropdown() {
 async function fetchMessage() {
   const res = await axios.get('/api/offer')
   backendMsg.value = res.data.message
+}
+
+function toggleVideo() {
+  const video = demoVideo.value
+  if (!video) return
+  if (video.paused) {
+    video.play()
+  } else {
+    video.pause()
+  }
 }
 
 </script>
@@ -269,7 +287,12 @@ body {
 }
 
 .right img {
-  max-width: 400px;
+  max-width: 600px;
   border-radius: 8px;
+}
+.demo-video {
+  max-width: 600px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 </style>
